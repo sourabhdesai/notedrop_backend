@@ -1,7 +1,9 @@
 # Notedrop API Documentation
 
 ## Schemas
+
 ### User
+
 - Fields
 	- `username`
 		- Type : *String*
@@ -17,15 +19,21 @@
 			- Array of Note IDs that this User has pending
 
 #### Endpoints
+
 - All CRUD Endpoints are implemented
+
 ##### Create User
+
 ###### Request
+
 - **POST**
 - `/createuser`
 - Key Value Pairs
 	- `username` : New User's Username
 	- `password` : MD5 Hashed Password for new User's account
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -44,12 +52,17 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+
 ##### Read User
+
 ###### Request
+
 - **GET**
 - `/getuser/<id>`
 	- `id` = Database ID for User who's info you want to retrieve
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -69,16 +82,22 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+
 ##### Update User
+
 - Currently Only adds new Note to User's Notes Field
 - For adding **new** notes to a user's account, **DO NOT** use this endpoint. To do that, use the *Create* endpoint for the Notes schema. Use this endpoint to add *currently existing* notes to a user.
+
 ###### Request
+
 - **PUT**
 - `/addnote`
 - Key Value Pairs
 	- `userID` : Database ID for User that you want to update
 	- `noteID` : Database ID for Note that you want to add to User's notes array
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -95,15 +114,21 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+
 ##### Delete User
+
 - Deletes User from Database and Removes Any Pointers to User via relational IDs
 	- Goes through each note for the User and removes the User from that Note's `users` array
+
 ###### Request
+
 - **PUT**
 - `/deleteuser`
 - Key Value Pairs
 	- `userID` : Database ID for User that you want to delete
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -123,6 +148,7 @@
 
 
 ### Note
+
 - Fields
 	- `text`
 		- Type : *String*
@@ -148,10 +174,15 @@
 		- Type : *Array*
 		- Description
 			- Array of User IDs for whom this Note should be notified
+
 #### Endpoints
+
 - All CRUD operations are implemented
+
 ##### Create Note
+
 ###### Request
+
 - **POST**
 - `/createnote`
 - Key Value Pairs
@@ -162,7 +193,9 @@
 	- `startDate` : Milliseconds since January 1, 1970 indicating time when the new note should become *active*
 	- `endDate` : Milliseconds since January 1, 1970 indicating time when the new note should become *inactive*
 	- `users` : Comma seperated list of User ID's for whom this new Note should be notified for. **NO WHITESPACES**
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -181,12 +214,17 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+
 ##### Read Note
+
 ###### Request
+
 - **GET**
 - `/getnote/<id>`
 	- `id` = Database ID for the Note that you want to retrieve info for
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -212,8 +250,11 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+
 ##### Update Note
+
 ###### Request
+
 - **PUT**
 - `/updatenote`
 - Key Value Pairs
@@ -225,7 +266,9 @@
 	- `startDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *active*
 	- `endDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *inactive*
 	- `users` : New Comma seperated list of User ID's for whom this Note should be notified for. **NO WHITESPACE**
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
@@ -242,14 +285,20 @@
 			    "path": <String of the Path of the error>
 		    }
 	    }
+	    
 ##### Delete Note
+
 - Deletes Note and Also removes Note from Note array for All linked Users
+
 ###### Request
+
 - **PUT**
 - `/deletenote`
 - Key Value Pairs
 	- `noteID` : Database ID for Note that you want to delete
+
 ###### Response
+
 - Success Response:
 	    {
 		    success : true,
