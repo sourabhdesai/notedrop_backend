@@ -34,22 +34,26 @@
 
 ###### Response
 
-- Success Response:
+- Success Response
+
 	    {
 		    success : true,
 		    message : {
-			    ID : <String of Database ID for newly created User>
+			    ID : (String of Database ID for newly created User)
 		    }
 	    }
+
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -58,28 +62,31 @@
 ###### Request
 
 - **GET**
-- `/getuser/<id>`
+- `/getuser/(id)`
 	- `id` = Database ID for User who's info you want to retrieve
 
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : {
-			    username : <String of Username>
-			    notes : <Array of String IDs for Notes belonging to User>
+			    username : (String of Username)
+			    notes : )Array of String IDs for Notes belonging to User)
 		    }
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -99,19 +106,22 @@
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : "Successfully Added Message to User"
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -130,19 +140,22 @@
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : "Successfully Deleted User"
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -197,21 +210,24 @@
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : {
-			    ID : <String of Database ID for newly created Note>
+			    ID : (String of Database ID for newly created Note)
 		    }
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -220,34 +236,37 @@
 ###### Request
 
 - **GET**
-- `/getnote/<id>`
+- `/getnote/(id)`
 	- `id` = Database ID for the Note that you want to retrieve info for
 
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : {
-			    text : <String of Textual Content of Note>,
-			    latlong : <Array of length 2 in the form of [Latitude , Longitude] >,
-			    radius : <Number indicating radius for Note notification>,
-			    startDate : <Number indicating start time for Note notification in milliseconds>,
-			    endDate : <Number indicating end time for Note notification in milliseconds>,
-			    users : <Array of String representing Database IDs for Users who are to be Notified for this note>,
-			    _id : <String of Database ID for the note>,
-			    __v : <Number for Version Key for Document … Don't worry about this, it's only meaningful internally>
+			    text : (String of Textual Content of Note),
+			    latlong : (Array of length 2 in the form of [Latitude , Longitude] ),
+			    radius : (Number indicating radius for Note notification),
+			    startDate : (Number indicating start time for Note notification in milliseconds),
+			    endDate : (Number indicating end time for Note notification in milliseconds),
+			    users : (Array of String representing Database IDs for Users who are to be Notified for this note),
+			    _id : (String of Database ID for the note),
+			    __v : (Number for Version Key for Document … Don't worry about this, it's only meaningful internally)
 		    }
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 
@@ -270,19 +289,22 @@
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : "Successfully Updated Note"
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
 	    
@@ -300,18 +322,21 @@
 ###### Response
 
 - Success Response:
+
 	    {
 		    success : true,
 		    message : "Successfully Deleted Note"
 	    }
+
 - Failure Response:
+
 	    {
 		    success : false,
 		    message : {
-			    "message": <String Message Describing Error Here>,
-			    "name": <String of the Error Name>,
-			    "type": <String of the Object Type where the error occurred>,
-			    "value": <String of the value the cause the error>,
-			    "path": <String of the Path of the error>
+			    "message": (String Message Describing Error Here),
+			    "name": (String of the Error Name),
+			    "type": (String of the Object Type where the error occurred),
+			    "value": (String of the value the cause the error),
+			    "path": (String of the Path of the error)
 		    }
 	    }
