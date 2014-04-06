@@ -278,13 +278,15 @@
 - `/updatenote`
 - Key Value Pairs
 	- **NOTE: ALL OF THE FOLLOWING KEY VALUE PAIRS ARE OPTIONAL. HOWEVER, THERE MUST AT LEAST BE ONE**
+	- `noteID` : Database ID for the note that you want to update
 	- `text` : New Textual content for Note
 	- `latitude` : New Latitude of Note
 	- `longitude` : New Longitude of Note
 	- `radius` : New Radius of Note
 	- `startDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *active*
 	- `endDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *inactive*
-	- `users` : New Comma seperated list of User ID's for whom this Note should be notified for. **NO WHITESPACE**
+	- `newusers` : Comma seperated list of User ID's for whom you want to **add** for notification of the Note. These users **MUST NOT** already be added to the list of users for the note, or else they will be double counted. **NO WHITESPACE**
+	- `removeusers` : Comma seperated list of User ID's for whom you want to **remove** for notification of the note. These users **MUST** be in the list of users for the note, or else a database error will occurr. **NO WHITESPACE**
 
 ###### Response
 

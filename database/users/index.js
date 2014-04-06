@@ -1,18 +1,38 @@
-var UserData = function (mongoose, db) {
+var mongoose  = null;
+var User      = null;
+exports.model = null;
 
-	var User = db.model("User", new mongoose.Schema(
+exports.attatchMongoose = function(m) {
+	mongoose = m;
+};
+
+exports.createModel = function(db) {
+
+	var userSchema =  new mongoose.Schema(
 		{
 			username : String,
 			password : String,
 			notes    : [mongoose.Schema.Types.ObjectId]
 		}
-	));
+	);
 
-	this.model = User;
+	userSchema.methods.removeNote = function(id) {
+		for(var i = 0; i < this.notes.length; i++) {
+			if( this.notes[i].equals(id) ) {
+				this.notes.splice(i,1);
+				return;
+			}
+		}
+	};
 
-	// CRUD Operations on User Schema
-	// Create a new User
-	UserData.prototype.createUser = function(req,res) {
+	User = db.model("User", userSchema);
+
+	exports.model = User;	
+};
+
+// CRUD Operations on User Schema
+// Create a new User
+exports.createUser = function(req,res) {
 		var username = req.body.username;
 		var passhash = req.body.password; // MD5 Hashed Password
 		User.findOne( { username : username } ).exec(function(err, user) {
@@ -45,10 +65,10 @@ var UserData = function (mongoose, db) {
 					message : "Username already exists"
 				});
 		});
-	}; // createUser END
+}; // createUser END
 
-	// Read an existing User's data
-	UserData.prototype.readUser = function(req,res) {
+// Read an existing User's data
+exports.readUser = function(req,res) {
 		var userID = req.param("id");
 		User.findById(userID).exec( function(err, user) {
 			if (err) {
@@ -66,10 +86,10 @@ var UserData = function (mongoose, db) {
 				});
 			}
 		});
-	}; // readUser END
+}; // readUser END
 
-	// Update data on User ... Currently for Adding New Message
-	UserData.prototype.updateUser = function(req,res) {
+// Update data on User ... Currently for Adding New Message
+exports.updateUser = function(req,res) {
 		var userID = req.body.userID;
 		User.findById(userID).exec( function(err, user) {
 			if (err) {
@@ -97,10 +117,10 @@ var UserData = function (mongoose, db) {
 				});
 			}
 		});
-	}; // updateUser END
+}; // updateUser END
 
-	// Delete User
-	UserData.prototype.deleteUser = function(req,res) {
+// Delete User
+exports.deleteUser = function(req,res) {
 		var userID = req.body.userID;
 
 		User.findById(userID).exec(function(err, user) {
@@ -145,7 +165,4 @@ var UserData = function (mongoose, db) {
 				});
 			}
 		});
-	}; // deleteUser END
-};
-
-module.exports = UserData;
+}; // deleteUser END
