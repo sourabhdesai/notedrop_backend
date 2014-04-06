@@ -1,5 +1,6 @@
 # Notedrop API Documentation
 - **BASE URL:** `http://notedrop-server.herokuapp.com/`
+
 ## Schemas
 
 ### User
