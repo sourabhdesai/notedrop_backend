@@ -50,10 +50,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -73,7 +73,7 @@
 		    success : true,
 		    message : {
 			    username : (String of Username)
-			    notes : )Array of String IDs for Notes belonging to User)
+			    notes    : (Array of String IDs for Notes belonging to User)
 		    }
 	    }
 
@@ -83,10 +83,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -118,10 +118,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -152,10 +152,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -224,10 +224,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -246,14 +246,14 @@
 	    {
 		    success : true,
 		    message : {
-			    text : (String of Textual Content of Note),
-			    latlong : (Array of length 2 in the form of [Latitude , Longitude] ),
-			    radius : (Number indicating radius for Note notification),
+			    text      : (String of Textual Content of Note),
+			    latlong   : (Array of length 2 in the form of [Latitude , Longitude] ),
+			    radius    : (Number indicating radius for Note notification),
 			    startDate : (Number indicating start time for Note notification in milliseconds),
-			    endDate : (Number indicating end time for Note notification in milliseconds),
-			    users : (Array of String representing Database IDs for Users who are to be Notified for this note),
-			    _id : (String of Database ID for the note),
-			    __v : (Number for Version Key for Document … Don't worry about this, it's only meaningful internally)
+			    endDate   : (Number indicating end time for Note notification in milliseconds),
+			    users     : (Array of String representing Database IDs for Users who are to be Notified for this note),
+			    _id       : (String of Database ID for the note),
+			    __v       : (Number for Version Key for Document … Don't worry about this, it's only meaningful internally)
 		    }
 	    }
 
@@ -263,10 +263,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 
@@ -303,10 +303,10 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
 	    
@@ -336,9 +336,9 @@
 		    success : false,
 		    message : {
 			    "message": (String Message Describing Error Here),
-			    "name": (String of the Error Name),
-			    "type": (String of the Object Type where the error occurred),
-			    "value": (String of the value the cause the error),
-			    "path": (String of the Path of the error)
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
 		    }
 	    }
