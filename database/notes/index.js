@@ -319,12 +319,7 @@ exports.deleteNote = function(req,res) {
 				else {
 					for(var i = 0; i < users.length; i++) {
 						var user = users[i];
-						for (var a = 0; a < user.notes.length; a++) {
-							if(user.notes[a].equals(note._id)) {
-								user.notes.splice(a,1);
-								break;
-							}
-						}
+						user.removeNote(note._id);
 						var err = user.save();
 						if (err) {
 							res.json({
