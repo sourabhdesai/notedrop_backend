@@ -34,14 +34,12 @@ exports.createModel = function(db) {
 // CRUD Operations on User Schema
 // Create a new User
 exports.createUser = function(req,res) {
-	console.log(req.body);
 	var username = req.body.username;
 	var passhash = req.body.password; // MD5 Hashed Password
 	User.findOne( { username : username } ).exec(function(err, user) {
 		if (err == null && user == null) {
 			// This is actually a good thing here!
-			// If err is not equal to null, then it means the query couldn't find any users with the same username
-			console.log();
+			// If err & user is equal to null, then it means the query couldn't find any users with the same username
 			var newUser = new User();
 			newUser.username = username;
 			newUser.password = passhash;
@@ -63,10 +61,6 @@ exports.createUser = function(req,res) {
 			});
 		}
 		else if(user) {
-			console.log("user");
-			console.log(user);
-			console.log("err");
-			console.log(err);
 			res.json({
 				success : false,
 				message : "Username already exists"
@@ -76,7 +70,8 @@ exports.createUser = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at createUser 1");
+			console.log("Error Here at createUser 1");
+			console.log(err);
 		}
 	});
 }; // createUser END
@@ -90,7 +85,8 @@ exports.readUser = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at readUser 1");
+			console.log("Error Here at readUser 1");
+			console.log(err);
 		} else if(user) {
 			res.json({
 				success : true,
@@ -124,6 +120,7 @@ exports.loginUser = function(req,res) {
 			console.log(err);
 		} else if(user) {
 			res.json({
+				success : true,
 				ID : user._id,
 				note : user.notes
 			});
@@ -145,7 +142,8 @@ exports.updateUser = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at updateUser 1");
+			console.log("Error Here at updateUser 1");
+			console.log(err);
 		} else {
 			var noteID = req.body.noteID;
 			// Add new message to message array
@@ -157,7 +155,8 @@ exports.updateUser = function(req,res) {
 						success : false,
 						message : err
 					});
-					//console.log("Error Here at updateUser 2");
+					console.log("Error Here at updateUser 2");
+					console.log(err);
 				} else {
 					res.json({
 						success : true,
@@ -179,7 +178,8 @@ exports.deleteUser = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error at deleteUser 1");
+			console.log("Error at deleteUser 1");
+			console.log(err);
 		}
 		else {
 			console.log(user);
@@ -190,7 +190,8 @@ exports.deleteUser = function(req,res) {
 							success : false,
 							message : err
 						});
-						//console.log("error here at deleteUser 2");
+						console.log("error here at deleteUser 2");
+						console.log(err);
 					} else {
 						for( var i = 0; i < notes.length; i++) {
 							var note = notes[i];
@@ -201,7 +202,8 @@ exports.deleteUser = function(req,res) {
 									success : false,
 									message : err
 								});
-								//console.log("error Here at deleteUser 3");
+								console.log("error Here at deleteUser 3");
+								console.log(err);
 								return;
 							}
 						}

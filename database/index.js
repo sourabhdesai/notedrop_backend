@@ -1,6 +1,7 @@
-var mongoose    = require('mongoose');
-var Users  = require('./users');
-var Notes = require('./notes');
+var mongoose = require('mongoose');
+var Users    = require('./users');
+var Notes    = require('./notes');
+
 // Attatch Mongoose to Each to get Access to mongoose api
 Users.attatchMongoose(mongoose);
 Notes.attatchMongoose(mongoose);

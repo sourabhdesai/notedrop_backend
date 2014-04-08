@@ -28,7 +28,7 @@
 ###### Request
 
 - **POST**
-- `/createuser`
+- `/user/create`
 - Key Value Pairs
 	- `username` : New User's Username
 	- `password` : MD5 Hashed Password for new User's account
@@ -63,7 +63,7 @@
 ###### Request
 
 - **GET**
-- `/getuser/(id)`
+- `/user/get/(id)`
 	- `id` = Database ID for User who's info you want to retrieve
 
 ###### Response
@@ -96,7 +96,7 @@
 ###### Request
 
 - **PUT**
-- `/loginuser`
+- `/user/login`
 - Key Value Pairs
 	- `username` : User's username
 	- `password` : User's Hashed Password
@@ -135,7 +135,7 @@
 ###### Request
 
 - **PUT**
-- `/addnote`
+- `/user/addnote`
 - Key Value Pairs
 	- `userID` : Database ID for User that you want to update
 	- `noteID` : Database ID for Note that you want to add to User's notes array
@@ -170,7 +170,7 @@
 ###### Request
 
 - **PUT**
-- `/deleteuser`
+- `/user/delete`
 - Key Value Pairs
 	- `userID` : Database ID for User that you want to delete
 
@@ -234,7 +234,7 @@
 ###### Request
 
 - **POST**
-- `/createnote`
+- `/note/create`
 - Key Value Pairs
 	- `text` : Textual content for new Note
 	- `latitude` : Latitude of new Note
@@ -273,7 +273,7 @@
 ###### Request
 
 - **GET**
-- `/getnote/(id)`
+- `/note/get/(id)`
 	- `id` = Database ID for the Note that you want to retrieve info for
 
 ###### Response
@@ -312,7 +312,7 @@
 ###### Request
 
 - **PUT**
-- `/updatenote`
+- `/note/update`
 - Key Value Pairs
 	- **NOTE: ALL OF THE FOLLOWING KEY VALUE PAIRS ARE OPTIONAL. HOWEVER, THERE MUST AT LEAST BE ONE**
 	- `noteID` : Database ID for the note that you want to update
@@ -354,7 +354,7 @@
 ###### Request
 
 - **PUT**
-- `/deletenote`
+- `/note/delete`
 - Key Value Pairs
 	- `noteID` : Database ID for Note that you want to delete
 

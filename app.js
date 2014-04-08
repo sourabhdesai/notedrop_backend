@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -34,17 +33,17 @@ app.get('/', function(req,res) {
 });
 
 // User Data EndPoints
-app.post('/createuser', db.Users.createUser);
-app.get('/getuser/:id', db.Users.readUser);
-app.put('/loginuser', db.Users.loginUser);
-app.put('/addnote' , db.Users.updateUser);
-app.put('/deleteuser' , db.Users.deleteUser);
+app.post('/user/create', db.Users.createUser);
+app.get('/user/get/:id', db.Users.readUser);
+app.put('/user/login', db.Users.loginUser);
+app.put('/user/addnote' , db.Users.updateUser);
+app.put('/user/delete' , db.Users.deleteUser);
 
 // Note Data EndPoints
-app.post('/createnote', db.Notes.createNote);
-app.get('/getnote/:id', db.Notes.readNote);
-app.put('/updatenote' , db.Notes.updateNote);
-app.put('/deletenote' , db.Notes.deleteNote);
+app.post('/note/create', db.Notes.createNote);
+app.get('/note/get/:id', db.Notes.readNote);
+app.put('/note/update' , db.Notes.updateNote);
+app.put('/note/update' , db.Notes.deleteNote);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
