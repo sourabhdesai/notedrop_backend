@@ -8,7 +8,7 @@ exports.attatchMongoose = function(m) {
 
 exports.createModel = function(db) {
 
-	Note = db.model("Note", new mongoose.Schema(
+	var NoteSchema = new mongoose.Schema(
 		{
 			text      : String,
 			latlong   : [Number], // [ Latitude , Longitude ]
@@ -17,7 +17,18 @@ exports.createModel = function(db) {
 			endDate   : Number,
 			users     : [mongoose.Schema.Types.ObjectId]
 		}
-	));
+	);
+
+	NoteSchema.methods.removeUser = function(id) {
+		for(var i = 0; i < this.users.length; i++) {
+			if( this.users[i].equals(id) ) {
+				this.users.splice(i,1);
+				return;
+			}
+		}
+	};
+
+	Note = db.model("Note", NoteSchema);
 
 	exports.model = Note;	
 };

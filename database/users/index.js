@@ -33,6 +33,7 @@ exports.createModel = function(db) {
 // CRUD Operations on User Schema
 // Create a new User
 exports.createUser = function(req,res) {
+		console.log(req);
 		var username = req.body.username;
 		var passhash = req.body.password; // MD5 Hashed Password
 		User.findOne( { username : username } ).exec(function(err, user) {
@@ -59,11 +60,16 @@ exports.createUser = function(req,res) {
 					}
 				});
 			}
-			else
+			else {
+				console.log("user");
+				console.log(user);
+				console.log("err");
+				console.log(err);
 				res.json({
 					success : false,
 					message : "Username already exists"
 				});
+			}
 		});
 }; // createUser END
 
@@ -130,9 +136,6 @@ exports.deleteUser = function(req,res) {
 					message : err
 				});
 			else {
-				for(var i = 0; i < user.notes.length; i++) {
-					user.notes[i] = { _id : user.notes[i]._id };
-				}
 				this.NotesModel.find().or(user.notes).exec(function (err, notes) {
 					if (err)
 						res.json({
@@ -142,12 +145,7 @@ exports.deleteUser = function(req,res) {
 					else {
 						for( var i = 0; i < notes.length; i++) {
 							var note = notes[i];
-							for(var i = 0; i < note.users.length; i++) {
-								if ( note.user[i].equals(user._id) ) {
-									note.user.splice(i,1);
-									break;
-								}
-							}
+							note.removeUser(user._id);
 							var err = note.save();
 							if (err) {
 								res.json({

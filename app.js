@@ -37,13 +37,13 @@ app.get('/', function(req,res) {
 app.post('/createuser', db.Users.createUser);
 app.get('/getuser/:id', db.Users.readUser  );
 app.put('/addnote' , db.Users.updateUser);
-app.put('/deleteuser' , db.Users.deleteUser);
+app.delete('/deleteuser' , db.Users.deleteUser);
 
 // Note Data EndPoints
 app.post('/createnote', db.Notes.createNote);
 app.get('/getnote/:id', db.Notes.readNote  );
 app.put('/updatenote' , db.Notes.updateNote);
-app.put('/deletenote' , db.Notes.deleteNote);
+app.delete('/deletenote' , db.Notes.deleteNote);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
