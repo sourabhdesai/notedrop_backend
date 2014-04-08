@@ -35,13 +35,14 @@ app.get('/', function(req,res) {
 
 // User Data EndPoints
 app.post('/createuser', db.Users.createUser);
-app.get('/getuser/:id', db.Users.readUser  );
+app.get('/getuser/:id', db.Users.readUser);
+app.put('/loginuser', db.Users.loginUser);
 app.put('/addnote' , db.Users.updateUser);
 app.put('/deleteuser' , db.Users.deleteUser);
 
 // Note Data EndPoints
 app.post('/createnote', db.Notes.createNote);
-app.get('/getnote/:id', db.Notes.readNote  );
+app.get('/getnote/:id', db.Notes.readNote);
 app.put('/updatenote' , db.Notes.updateNote);
 app.put('/deletenote' , db.Notes.deleteNote);
 

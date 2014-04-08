@@ -91,7 +91,7 @@ exports.readUser = function(req,res) {
 				message : err
 			});
 			//console.log("Error Here at readUser 1");
-		} else {
+		} else if(user) {
 			res.json({
 				success : true,
 				message : {
@@ -99,9 +99,42 @@ exports.readUser = function(req,res) {
 					notes : user.notes
 				}
 			});
+		} else {
+			res.json({
+				success : false,
+				message : "Couldn't Find User with given ID"
+			});
 		}
 	});
 }; // readUser END
+
+exports.loginUser = function(req,res) {
+	var username = req.body.username;
+	var passhash = req.body.password;
+	User.findOne({
+		username : username,
+		password : passhash
+	}).exec( function(err, user) {
+		if (err) {
+			res.json({
+				success : false,
+				message : err
+			});
+			console.log("Error Here at loginUser 1");
+			console.log(err);
+		} else if(user) {
+			res.json({
+				ID : user._id,
+				note : user.notes
+			});
+		} else {
+			res.json({
+				success : false,
+				message : "Couldn't Find User with given Username & Password"
+			});
+		}
+	});
+};
 
 // Update data on User ... Currently for Adding New Message
 exports.updateUser = function(req,res) {

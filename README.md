@@ -91,6 +91,42 @@
 		    }
 	    }
 
+##### Login User
+
+###### Request
+
+- **PUT**
+- `/loginuser`
+- Key Value Pairs
+	- `username` : User's username
+	- `password` : User's Hashed Password
+
+###### Response
+
+- Success Response:
+
+	    {
+		    success : true,
+		    message : {
+			    ID    : (String of User's Database ID)
+			    notes : (Array of String IDs for Notes belonging to User)
+		    }
+	    }
+
+- Failure Response:
+
+	    {
+		    success : false,
+		    message : {
+			    "message": (String Message Describing Error Here),
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
+		    }
+	    }
+
+
 ##### Update User
 
 - Currently Only adds new Note to User's Notes Field
