@@ -195,7 +195,7 @@ exports.deleteUser = function(req,res) {
 					} else {
 						for( var i = 0; i < notes.length; i++) {
 							var note = notes[i];
-							note.removeUser(user._id);
+							note.removeUser(user._id); // O(note.users) operation
 							var err = note.save();
 							if (err) {
 								res.json({
