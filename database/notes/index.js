@@ -56,24 +56,28 @@ exports.createNote = function(req,res) {
 	newNote.users     = userIDs;
 
 	newNote.save(function (err) {
-		if (err)
+		if (err) {
 			res.json({
 				success : false,
 				message : err
 			});
-		else {
+			console.log("Error Here at createNote 1");
+			console.log(err);
+		} else {
 			for(var i = 0; i < userIDs.length; i++) {
 				userIDs[i] = {
 					_id : userIDs[i]
 				};
 			}
 			UserModel.find().or(userIDs).exec(function (err,users) {
-				if (err)
+				if (err) {
 					res.json({
 						success : false,
 						message : err
 					});
-				else {
+					//console.log("Error Here at createNote 2");
+					//console.log(err);
+				} else {
 					for(var i = 0; i < users.length; i++) {
 						users[i].notes.push(newNote); // O(users[i].notes.length) operation
 						var err = users[i].save();
@@ -82,6 +86,8 @@ exports.createNote = function(req,res) {
 								success : false,
 								message : err
 							});
+						//console.log("Error Here at createNote 3");
+						//console.log(err);
 							return;
 						}
 					}
@@ -101,12 +107,14 @@ exports.createNote = function(req,res) {
 exports.readNote = function(req,res) {
 	var noteID = req.param("id");
 	Note.findById(noteID).exec(function(err,note) {
-		if (err)
+		if (err) {
 			res.json({
 				success : false,
 				message : err
 			});
-		else
+			//console.log("Error Here at readNote 1");
+			//console.log(err);
+		} else
 			res.json({
 				success : true,
 				message : note
@@ -118,12 +126,14 @@ exports.readNote = function(req,res) {
 exports.updateNote = function(req,res) {
 	var noteID = res.body.noteID;
 	Note.findById(noteID).exec(function(err,note) {
-		if (err)
+		if (err) {
 			res.json({
 				success : false,
 				message : err
 			});
-		else {
+			//console.log("Error Here at updateNote 1");
+			//console.log(err);
+		} else {
 			// Set each field if an new one is given
 			if (req.body.text)
 				note.text = req.body.text;
@@ -208,12 +218,14 @@ exports.updateNote = function(req,res) {
 					newusers[i] = mongoose.Types.ObjectId(newusers[i]);
 				}
 				UserModel.find().or(newusers).exec(function (err, users) {
-					if (err)
+					if (err) {
 						res.json({
 							success : false,
 							message : err
 						});
-					else {
+					//console.log("Error Here at updateNote 2");
+					//console.log(err);
+					} else {
 						for(var i = 0; i < users.length; i++) {
 							user[i].notes.push(note._id);
 							var err = user[i].save();
@@ -222,6 +234,8 @@ exports.updateNote = function(req,res) {
 									success : false,
 									message : err
 								});
+								//console.log("Error Here at updateNote 3");
+								//console.log(err);
 								return;
 							}
 						}
@@ -231,12 +245,14 @@ exports.updateNote = function(req,res) {
 								removeusers[i] = mongoose.Types.ObjectId( removeusers[i] );
 							}
 							UserModel.find().or(removeusers).exec( function(err,rUsers) {
-								if (err)
+								if (err) {
 									res.json({
 										success : false,
 										message : err
 									});
-								else {
+								//console.log("Error Here at updateNote 4");
+								//console.log(err);
+								} else {
 									for (var i = rUsers.length - 1; i >= 0; i--) {
 										rUsers[i].removeNote(note._id);
 										var err = rUsers[i].save();
@@ -245,6 +261,8 @@ exports.updateNote = function(req,res) {
 												success : false,
 												message : err
 											});
+											//console.log("Error Here at updateNote 5");
+											//console.log(err);
 											return;
 										}
 									};
@@ -269,12 +287,14 @@ exports.updateNote = function(req,res) {
 					removeusers[i] = mongoose.Types.ObjectId( removeusers[i] );
 				}
 				UserModel.find().or(removeusers).exec( function(err,rUsers) {
-					if (err)
+					if (err) {
 						res.json({
 							success : false,
 							message : err
 						});
-					else {
+					//console.log("Error Here at updateNote 6");
+					//console.log(err);
+					} else {
 						for (var i = rUsers.length - 1; i >= 0; i--) {
 							rUsers[i].removeNote(note._id);
 							var err = rUsers[i].save();
@@ -294,12 +314,14 @@ exports.updateNote = function(req,res) {
 				});
 			} else {
 				note.save(function(err) {
-					if (err)
+					if (err) {
 						res.json({
 							success : false,
 							message : err
 						});
-					else
+						//console.log("Error Here at updateNote 7");
+						//console.log(err);
+					} else
 						res.json({
 							success : true,
 							message : "Succesfully Updated Note"
@@ -319,15 +341,19 @@ exports.deleteNote = function(req,res) {
 				success : false,
 				message : err
 			});
+			//console.log("Error Here at deleteNote 1");
+			//console.log(err);
 		else
 			// Remove note from each user's notes field
 			UserModel.find().or(note.users).exec(function(err, users) {
-				if (err)
+				if (err) {
 					res.json({
 						success : false,
 						message : err
 					});
-				else {
+					//console.log("Error Here at deleteNote 1");
+					//console.log(err);
+				} else {
 					for(var i = 0; i < users.length; i++) {
 						var user = users[i];
 						user.removeNote(note._id);
@@ -337,6 +363,8 @@ exports.deleteNote = function(req,res) {
 								success : false,
 								message : err
 							});
+							//console.log("Error Here at deleteNote 2");
+							//console.log(err);
 							return;
 						}
 					}
