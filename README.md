@@ -114,7 +114,19 @@
 		    success : true,
 		    message : {
 			    ID      : (String of User's Database ID)
-			    notes   : (Array of String IDs for Notes belonging to User)
+			    notes   : (Array of Notes for this user of the following form)
+				    [
+					    {
+						    text      : (String of Textual Content of Note),
+						    latlong   : (Array of length 2 in the form of [Latitude , Longitude] ),
+						    radius    : (Number indicating radius for Note notification),
+						    startDate : (Number indicating start time for Note notification in milliseconds),
+						    endDate   : (Number indicating end time for Note notification in milliseconds),
+						    users     : (Array of String representing Database IDs for Users who are to be Notified for this note),
+						    _id       : (String of Database ID for the note),
+						    __v       : (Number for Version Key for Document … Don't worry about this, it's only meaningful internally)
+					    }
+				    ]
 			    friends : (Array of String IDs for Users that this User is friends with)
 		    }
 	    }

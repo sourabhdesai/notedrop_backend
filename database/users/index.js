@@ -131,11 +131,44 @@ exports.loginUser = function(req,res) {
 			console.log("Error Here at loginUser 1");
 			console.log(err);
 		} else if(user) {
-			res.json({
-				success : true,
-				ID : user._id,
-				note : user.notes,
-				friends : user.friends
+			User.find().or(user.friends).exec(function(err, friends) {
+				if (err) {
+					res.json({
+						success : false,
+						message : err
+					});
+					console.log("Error Here at loginUser 2");
+					console.log(err);
+				}
+				else {
+					var friendArray = new Array(friends.length);
+					for(var i = 0; i < friendArray.length; i++) {
+						friendArray[i] = { 
+							username : friends[i].username,
+							ID : friends[i]._id
+						};
+					}
+					exports.NotesModel.find().or(user.notes).exec(function(err, notes) {
+						if (err) {
+							res.json({
+								success : false,
+								message : err
+							});
+							console.log("Error Here at loginUser 3");
+							console.log(err);
+						}
+						else {
+							res.json({
+								success : true,
+								message : {
+									ID : user._id,
+									friends : friends,
+									notes : notes
+								}
+							});
+						}
+					});
+				}
 			});
 		} else {
 			res.json({
