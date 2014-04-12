@@ -118,8 +118,8 @@
 					    {
 						    username : (String of the username for the friend)
 						    ID       : (String of the Database ID for the friend)
-					    }
-				    ],… 
+					    },… 
+				    ] 
 			    ),
 			    notes   : (Array of Notes Objects for this user of the following form
 				    [
