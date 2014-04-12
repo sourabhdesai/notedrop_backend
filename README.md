@@ -113,8 +113,14 @@
 	    {
 		    success : true,
 		    message : {
-			    ID      : (String of User's Database ID)
-			    notes   : (Array of Notes for this user of the following form)
+			    ID      : (Array of User Objects for this User of the following form)
+				    [
+					    {
+						    username : (String of the username for the friend)
+						    ID       : (String of the Database ID for the friend)
+					    }
+				    ]
+			    notes   : (Array of Notes Objects for this user of the following form)
 				    [
 					    {
 						    text      : (String of Textual Content of Note),
