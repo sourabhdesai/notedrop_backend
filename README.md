@@ -113,14 +113,15 @@
 	    {
 		    success : true,
 		    message : {
-			    ID      : (Array of User Objects for this User of the following form)
+			    ID      : (Array of User Objects for this User of the following form
 				    [
 					    {
 						    username : (String of the username for the friend)
 						    ID       : (String of the Database ID for the friend)
 					    }
-				    ]
-			    notes   : (Array of Notes Objects for this user of the following form)
+				    ],… 
+			    ),
+			    notes   : (Array of Notes Objects for this user of the following form
 				    [
 					    {
 						    text      : (String of Textual Content of Note),
@@ -131,8 +132,9 @@
 						    users     : (Array of String representing Database IDs for Users who are to be Notified for this note),
 						    _id       : (String of Database ID for the note),
 						    __v       : (Number for Version Key for Document … Don't worry about this, it's only meaningful internally)
-					    }
+					    },… 
 				    ]
+			    ),
 			    friends : (Array of String IDs for Users that this User is friends with)
 		    }
 	    }
