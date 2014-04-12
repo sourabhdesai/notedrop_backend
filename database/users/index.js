@@ -13,7 +13,8 @@ exports.createModel = function(db) {
 		{
 			username : String,
 			password : String,
-			notes    : [mongoose.Schema.Types.ObjectId]
+			notes    : [mongoose.Schema.Types.ObjectId],
+			friends  : [mongoose.Schema.Types.ObjectId]
 		}
 	);
 
@@ -24,6 +25,15 @@ exports.createModel = function(db) {
 				return;
 			}
 		}
+	};
+
+	userSchema.methods.removeFriend = function(id) {
+		for (var i = this.friends.length - 1; i >= 0; i--) {
+			if ( id == this.friends[i] ) {
+				this.friends.splice(i,1);
+				return;
+			}
+		};
 	};
 
 	User = db.model("User", userSchema);
@@ -40,10 +50,11 @@ exports.createUser = function(req,res) {
 		if (err == null && user == null) {
 			// This is actually a good thing here!
 			// If err & user is equal to null, then it means the query couldn't find any users with the same username
-			var newUser = new User();
+			var newUser      = new User();
 			newUser.username = username;
 			newUser.password = passhash;
-			newUser.notes = new Array(0);
+			newUser.notes    = new Array(0);
+			newUser.friends  = new Array(0);
 			newUser.save( function(err) {
 				if (err) {
 					res.json({
@@ -92,7 +103,8 @@ exports.readUser = function(req,res) {
 				success : true,
 				message : {
 					username : user.username,
-					notes : user.notes
+					notes : user.notes,
+					friends : user.friends
 				}
 			});
 		} else {
@@ -122,7 +134,8 @@ exports.loginUser = function(req,res) {
 			res.json({
 				success : true,
 				ID : user._id,
-				note : user.notes
+				note : user.notes,
+				friends : user.friends
 			});
 		} else {
 			res.json({
@@ -133,7 +146,7 @@ exports.loginUser = function(req,res) {
 	});
 };
 
-// Update data on User ... Currently for Adding New Message
+// Update data on User ... Currently for Adding New Message and Adding new Friend
 exports.updateUser = function(req,res) {
 	var userID = req.body.userID;
 	User.findById(userID).exec( function(err, user) {
@@ -144,10 +157,130 @@ exports.updateUser = function(req,res) {
 			});
 			console.log("Error Here at updateUser 1");
 			console.log(err);
-		} else {
-			var noteID = req.body.noteID;
-			// Add new message to message array
-			user.notes.push( mongoose.Types.ObjectId(noteID) ); // O(n) Operation ... We'll worry about that later
+		} else if (user) {
+			if( req.body.newfriends != null && req.body.removefriends != null ) {
+				var newfriends     = req.body.newfriends.split(',');
+				var removefriends  = req.body.removefriends.split(',');
+				var newUserFriends = new Array( user.friends.length - removefriends.length + newfriends.length );
+				// Add All Objects in note.users that aren't in removeusers to newNoteUsers
+				for(var i1 = 0, i2 = 0; i1 < user.friends.length - newUserFriends.length; ) {
+					var friendsString = user.friends[i2].toString();
+					for(var a = 0; a < removefriends.length; i++) {
+						if ( removefriends[a] && removeFriends[a] == friendsString ) {
+							removefriends[a] = null;
+							user.friends[i2] = null;
+							break;
+						}
+					}
+					if (user.friends[i2]) {
+						// Wasn't removed ... add it to the new array
+						newUserFriends[i1] = user.friends[i2];
+						i1++;
+						i2++;
+					} else {
+						i2++;
+					}
+				}
+				// Add All Objects in newusers to remaining indexes of newNoteUsers
+				for(var i = user.friends.length - removefriends.length, a = 0; i < newUserFriends; i++) {
+					newNoteUsers[i] = mongoose.Types.ObjectId( newusers[a] );
+					a++;
+				}
+				user.friends = newUserFriends;
+			} else if (req.body.newfriends) {
+				var newFriendsIDs = req.body.newfriends.split(",");
+				// Add new friend to friends array
+				var newUserIDs = new Array( user.friends.length + newFriendsIDs.length );
+				for(var i = 0; i < user.friends.length; i++) {
+					newUserIDs[i] = user.friends[i];
+				}
+				for(var i = user.friends.length; i < newUserIDs.length; i++) {
+					newUserIDs[i] = mongoose.Types.ObjectId( newFriendsIDs[i] );
+				}
+				user.friends = newUserIDs; // O(n) Operation ... We'll worry about that later
+			} else if (req.body.removefriends) {
+				var removeFriends = req.body.removefriends.split(",");
+				var removeFriendsIDs = new Array( user.friends.length - removeFriends.length );
+				for(var i = 0, n = 0; i < user.friends.length;) {
+					var idString = user.friends[n].toString();
+					for( var a = 0; a < removeFriends.length; a++ ) {
+						if ( user.friends[a] && idString == removeFriends[a] ) {
+							removeFriends = null;
+							user.friends[n] = null;
+							break;
+						}
+					}
+					if ( user.friends[n] ) {
+						removeFriendsIDs[i] = user.friends[n];
+						n++;
+						i++;
+					} else {
+						n++;
+					}
+				}
+			}
+			if ( req.body.newnotes != null && req.body.removenotes != null ) {
+				var newnotes     = req.body.newnotes.split(',');
+				var removenotes  = req.body.removenotes.split(',');
+				var newUserNotes = new Array( user.notes.length - removenotes.length + newnotes.length );
+				// Add All Objects in note.users that aren't in removeusers to newNoteUsers
+				for(var i1 = 0, i2 = 0; i1 < user.notes.length - newUserNotes.length; ) {
+					var notesString = user.notes[i2].toString();
+					for(var a = 0; a < removenotes.length; i++) {
+						if ( removenotes[a] && removeNotes[a] == notesString ) {
+							removenotes[a] = null;
+							user.notes[i2] = null;
+							break;
+						}
+					}
+					if (user.notes[i2]) {
+						// Wasn't removed ... add it to the new array
+						newUserNotes[i1] = user.notes[i2];
+						i1++;
+						i2++;
+					} else {
+						i2++;
+					}
+				}
+				// Add All Objects in newusers to remaining indexes of newNoteUsers
+				for(var i = user.notes.length - removenotes.length, a = 0; i < newUserNotes; i++) {
+					newUserNotes[i] = mongoose.Types.ObjectId( newnotes[a] );
+					a++;
+				}
+				user.notes = newUserNotes;
+			} else if (req.body.newnotes) {
+				var noteIDs = req.body.newfriends.split(",");
+				// Add new friend to friends array
+				var newUserIDs = new Array( user.friends.length + noteIDs.length );
+				for(var i = 0; i < user.friends.length; i++) {
+					newUserIDs[i] = user.friends[i];
+				}
+				for(var i = user.friends.length; i < newUserIDs.length; i++) {
+					newUserIDs[i] = mongoose.Types.ObjectId( noteIDs[i] );
+				}
+				user.friends = newUserIDs; // O(n) Operation ... We'll worry about that later
+			} else if (req.body.removenotes) {
+				var removeNotes = req.body.removenotes.split(",");
+				var removeNotesIDs = new Array( user.notes.length - removeNotes.length );
+				for(var i = 0, n = 0; i < user.notes.length;) {
+					var idString = user.notes[n].toString();
+					for( var a = 0; a < removeNotes.length; a++ ) {
+						if ( user.notes[a] && idString == removeNotes[a] ) {
+							removeNotes = null;
+							user.notes[n] = null;
+							break;
+						}
+					}
+					if ( user.notes[n] ) {
+						removeNotesIDs[i] = user.notes[n];
+						n++;
+						i++;
+					} else {
+						n++;
+					}
+				}
+			}
+
 			// Save changes to user
 			user.save(function(err) {
 				if (err) {
@@ -163,6 +296,11 @@ exports.updateUser = function(req,res) {
 						message : "Successfully Added Message to User"
 					});
 				}
+			});
+		} else {
+			res.json({
+				success : false,
+				message : "Couldn't find any Users with the given Username"
 			});
 		}
 	});
@@ -207,9 +345,36 @@ exports.deleteUser = function(req,res) {
 								return;
 							}
 						}
-						res.json({
-							success : true,
-							message : "Successfully Deleted User"
+						// Delete from Friends
+						User.find().or(user.friends).exec(function(err, friends) {
+							if (err) {
+								res.json({
+									success : false,
+									message : err
+								});
+							} else if (friends) {
+								for(var i = 0; i < friends.length; i++) {
+									friends[i].removeFriend(user._id);
+									var err = friends[i].save();
+									if (err) {
+										res.json({
+											success : false,
+											message : err
+										});
+										return;
+									}
+								}
+								user.remove();
+								res.json({
+									success : true,
+									message : "Successfully Deleted User"
+								});
+							} else {
+								res.json({
+									success : false,
+									message : "Couldn't find friends for user " + user._id
+								});
+							}
 						});
 					}
 				});

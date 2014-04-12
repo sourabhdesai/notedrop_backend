@@ -36,7 +36,7 @@ app.get('/', function(req,res) {
 app.post('/user/create', db.Users.createUser);
 app.get('/user/get/:id', db.Users.readUser);
 app.put('/user/login', db.Users.loginUser);
-app.put('/user/addnote' , db.Users.updateUser);
+app.put('/user/update' , db.Users.updateUser);
 app.put('/user/delete' , db.Users.deleteUser);
 
 // Note Data EndPoints

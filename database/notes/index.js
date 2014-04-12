@@ -1,6 +1,7 @@
-var mongoose  = null;
-var Note      = null;
-exports.model = null;
+var mongoose      = null;
+var Note          = null;
+exports.UserModel = null;
+exports.model     = null;
 
 exports.attatchMongoose = function(m) {
 	mongoose = m;
@@ -69,7 +70,7 @@ exports.createNote = function(req,res) {
 					_id : userIDs[i]
 				};
 			}
-			UserModel.find().or(userIDs).exec(function (err,users) {
+			exports.UserModel.find().or(userIDs).exec(function (err,users) {
 				if (err) {
 					res.json({
 						success : false,
@@ -124,15 +125,15 @@ exports.readNote = function(req,res) {
 
 // Update data on Note ... Can Update any field within Note document
 exports.updateNote = function(req,res) {
-	var noteID = res.body.noteID;
+	var noteID = req.body.noteID;
 	Note.findById(noteID).exec(function(err,note) {
 		if (err) {
 			res.json({
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at updateNote 1");
-			//console.log(err);
+			console.log("Error Here at updateNote 1");
+			console.log(err);
 		} else {
 			// Set each field if an new one is given
 			if (req.body.text)
@@ -173,7 +174,7 @@ exports.updateNote = function(req,res) {
 				}
 				// Add All Objects in newusers to remaining indexes of newNoteUsers
 				for(var i = note.users.length - removeusers.length, a = 0; i < newNoteUsers; i++) {
-					newNoteUsers[i] = mongoose.Types.ObjectId(newusers[a]);
+					newNoteUsers[i] = { _ id : newusers[a] };
 					a++;
 				}
 				note.users = newNoteUsers;
@@ -181,10 +182,10 @@ exports.updateNote = function(req,res) {
 				var newusers = req.body.newusers.split(",");
 				var newNoteUsers = new Array(note.users.length + newusers.length);
 				for(var i = 0; i < note.users.length; i++) {
-					newNoteUsers[i] = mongoose.Types.ObjectId( note.users[i] );
+					newNoteUsers[i] = { _ id : note.users[i] };
 				}
 				for(var i = note.users.length; i < newNoteUsers.length;i++) {
-					newNoteUsers[i] = mongoose.Types.ObjectId( newusers[i - note.users.length] );
+					newNoteUsers[i] = { _ id : newusers[i - note.users.length] };
 				}
 				note.users = newNoteUsers;
 				// Go to Each User and Add the new Note to it
@@ -215,16 +216,16 @@ exports.updateNote = function(req,res) {
 				// update users in newusers, then, if it exists, in removeusers 
 				var newusers = req.body.newusers.split(",");
 				for(var i = 0; i < newusers.length; i++) {
-					newusers[i] = mongoose.Types.ObjectId(newusers[i]);
+					newusers[i] = { _id : newusers[i] };
 				}
-				UserModel.find().or(newusers).exec(function (err, users) {
+				exports.UserModel.find().or(newusers).exec(function (err, users) {
 					if (err) {
 						res.json({
 							success : false,
 							message : err
 						});
-					//console.log("Error Here at updateNote 2");
-					//console.log(err);
+					console.log("Error Here at updateNote 2");
+					console.log(err);
 					} else {
 						for(var i = 0; i < users.length; i++) {
 							user[i].notes.push(note._id);
@@ -234,24 +235,24 @@ exports.updateNote = function(req,res) {
 									success : false,
 									message : err
 								});
-								//console.log("Error Here at updateNote 3");
-								//console.log(err);
+								console.log("Error Here at updateNote 3");
+								console.log(err);
 								return;
 							}
 						}
 						if (req.body.removeusers) {
 							var removeusers = req.body.removeusers.split(",");
 							for(var i = 0; i < removeusers.length; i++) {
-								removeusers[i] = mongoose.Types.ObjectId( removeusers[i] );
+								removeusers[i] = { _ id : removeusers[i] };
 							}
-							UserModel.find().or(removeusers).exec( function(err,rUsers) {
+							exports.UserModel.find().or(removeusers).exec( function(err,rUsers) {
 								if (err) {
 									res.json({
 										success : false,
 										message : err
 									});
-								//console.log("Error Here at updateNote 4");
-								//console.log(err);
+									console.log("Error Here at updateNote 4");
+									console.log(err);
 								} else {
 									for (var i = rUsers.length - 1; i >= 0; i--) {
 										rUsers[i].removeNote(note._id);
@@ -261,8 +262,8 @@ exports.updateNote = function(req,res) {
 												success : false,
 												message : err
 											});
-											//console.log("Error Here at updateNote 5");
-											//console.log(err);
+											console.log("Error Here at updateNote 5");
+											console.log(err);
 											return;
 										}
 									};
@@ -284,16 +285,16 @@ exports.updateNote = function(req,res) {
 				// update users in removeusers
 				var removeusers = req.body.removeusers.split(",");
 				for(var i = 0; i < removeusers.length; i++) {
-					removeusers[i] = mongoose.Types.ObjectId( removeusers[i] );
+					removeusers[i] = { _id : removeusers[i] };
 				}
-				UserModel.find().or(removeusers).exec( function(err,rUsers) {
+				exports.UserModel.find().or(removeusers).exec( function(err,rUsers) {
 					if (err) {
 						res.json({
 							success : false,
 							message : err
 						});
-					//console.log("Error Here at updateNote 6");
-					//console.log(err);
+						console.log("Error Here at updateNote 6");
+						console.log(err);
 					} else {
 						for (var i = rUsers.length - 1; i >= 0; i--) {
 							rUsers[i].removeNote(note._id);
@@ -305,6 +306,8 @@ exports.updateNote = function(req,res) {
 								});
 								return;
 							}
+							console.log("Error Here at updateNote 7");
+							console.log(err);
 						};
 						res.json({
 							success : true,
@@ -319,8 +322,8 @@ exports.updateNote = function(req,res) {
 							success : false,
 							message : err
 						});
-						//console.log("Error Here at updateNote 7");
-						//console.log(err);
+						console.log("Error Here at updateNote 7");
+						console.log(err);
 					} else
 						res.json({
 							success : true,
@@ -341,8 +344,8 @@ exports.deleteNote = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at deleteNote 1");
-			//console.log(err);
+			console.log("Error Here at deleteNote 1");
+			console.log(err);
 		else
 			// Remove note from each user's notes field
 			UserModel.find().or(note.users).exec(function(err, users) {
@@ -351,8 +354,8 @@ exports.deleteNote = function(req,res) {
 						success : false,
 						message : err
 					});
-					//console.log("Error Here at deleteNote 1");
-					//console.log(err);
+					console.log("Error Here at deleteNote 1");
+					console.log(err);
 				} else {
 					for(var i = 0; i < users.length; i++) {
 						var user = users[i];
@@ -363,11 +366,12 @@ exports.deleteNote = function(req,res) {
 								success : false,
 								message : err
 							});
-							//console.log("Error Here at deleteNote 2");
-							//console.log(err);
+							console.log("Error Here at deleteNote 2");
+							console.log(err);
 							return;
 						}
 					}
+					note.remove();
 					res.json({
 						success : true,
 						message : "Succesfully Deleted Note"

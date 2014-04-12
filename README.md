@@ -18,6 +18,10 @@
 		- Type : *Array*
 		- Description
 			- Array of Note IDs that this User has pending
+	- `friends`
+		- Type : Array
+		- Description
+			- Array of User IDs that this User is friends with
 
 #### Endpoints
 
@@ -75,6 +79,7 @@
 		    message : {
 			    username : (String of Username)
 			    notes    : (Array of String IDs for Notes belonging to User)
+			    friends  : (Array of String IDs for Users that this User is friends with)
 		    }
 	    }
 
@@ -108,8 +113,9 @@
 	    {
 		    success : true,
 		    message : {
-			    ID    : (String of User's Database ID)
-			    notes : (Array of String IDs for Notes belonging to User)
+			    ID      : (String of User's Database ID)
+			    notes   : (Array of String IDs for Notes belonging to User)
+			    friends : (Array of String IDs for Users that this User is friends with)
 		    }
 	    }
 
@@ -135,10 +141,12 @@
 ###### Request
 
 - **PUT**
-- `/user/addnote`
+- `/user/update`
 - Key Value Pairs
-	- `userID` : Database ID for User that you want to update
-	- `noteID` : Database ID for Note that you want to add to User's notes array
+	- `newfriends` : Comma Seperated List of User IDs that this User wants to add to their friends list
+	- `removefriends` : Comma seperated List of User IDs that this User wants to remove from their friends list
+	- `newnotes` : Comma seperated list of Note IDs that this user wants to add to their notes list
+	- `removenotes` : Comma seperated list of Note IDs that this user wants to remove from their notes list
 
 ###### Response
 
