@@ -174,7 +174,7 @@ exports.updateNote = function(req,res) {
 				}
 				// Add All Objects in newusers to remaining indexes of newNoteUsers
 				for(var i = note.users.length - removeusers.length, a = 0; i < newNoteUsers; i++) {
-					newNoteUsers[i] = { _ id : newusers[a] };
+					newNoteUsers[i] = mongoose.Types.ObjectId(newusers[a]);
 					a++;
 				}
 				note.users = newNoteUsers;
@@ -182,10 +182,10 @@ exports.updateNote = function(req,res) {
 				var newusers = req.body.newusers.split(",");
 				var newNoteUsers = new Array(note.users.length + newusers.length);
 				for(var i = 0; i < note.users.length; i++) {
-					newNoteUsers[i] = { _ id : note.users[i] };
+					newNoteUsers[i] = mongoose.Types.ObjectId(note.users[i]);
 				}
 				for(var i = note.users.length; i < newNoteUsers.length;i++) {
-					newNoteUsers[i] = { _ id : newusers[i - note.users.length] };
+					newNoteUsers[i] = mongoose.Types.ObjectId(newusers[i - note.users.length]);
 				}
 				note.users = newNoteUsers;
 				// Go to Each User and Add the new Note to it
@@ -243,7 +243,7 @@ exports.updateNote = function(req,res) {
 						if (req.body.removeusers) {
 							var removeusers = req.body.removeusers.split(",");
 							for(var i = 0; i < removeusers.length; i++) {
-								removeusers[i] = { _ id : removeusers[i] };
+								removeusers[i] = mongoose.Types.ObjectId(removeusers[i]);
 							}
 							exports.UserModel.find().or(removeusers).exec( function(err,rUsers) {
 								if (err) {
@@ -339,13 +339,14 @@ exports.updateNote = function(req,res) {
 exports.deleteNote = function(req,res) {
 	var noteID = req.body.noteID;
 	Note.findById(noteID).exec(function (err, note) {
-		if (err)
+		if (err) {
 			res.json({
 				success : false,
 				message : err
 			});
 			console.log("Error Here at deleteNote 1");
 			console.log(err);
+		}
 		else
 			// Remove note from each user's notes field
 			UserModel.find().or(note.users).exec(function(err, users) {
