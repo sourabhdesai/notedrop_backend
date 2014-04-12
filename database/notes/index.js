@@ -76,8 +76,8 @@ exports.createNote = function(req,res) {
 						success : false,
 						message : err
 					});
-					//console.log("Error Here at createNote 2");
-					//console.log(err);
+					console.log("Error Here at createNote 2");
+					console.log(err);
 				} else {
 					for(var i = 0; i < users.length; i++) {
 						users[i].notes.push(newNote); // O(users[i].notes.length) operation
@@ -87,8 +87,8 @@ exports.createNote = function(req,res) {
 								success : false,
 								message : err
 							});
-						//console.log("Error Here at createNote 3");
-						//console.log(err);
+						console.log("Error Here at createNote 3");
+						console.log(err);
 							return;
 						}
 					}
@@ -113,8 +113,8 @@ exports.readNote = function(req,res) {
 				success : false,
 				message : err
 			});
-			//console.log("Error Here at readNote 1");
-			//console.log(err);
+			console.log("Error Here at readNote 1");
+			console.log(err);
 		} else
 			res.json({
 				success : true,
@@ -235,7 +235,7 @@ exports.updateNote = function(req,res) {
 									success : false,
 									message : err
 								});
-								console.log("Error Here at updateNote 3");
+								console.log("Error Here at updateNote 3 at index " + i);
 								console.log(err);
 								return;
 							}
@@ -262,7 +262,7 @@ exports.updateNote = function(req,res) {
 												success : false,
 												message : err
 											});
-											console.log("Error Here at updateNote 5");
+											console.log("Error Here at updateNote 5 at index " + i);
 											console.log(err);
 											return;
 										}
@@ -306,7 +306,7 @@ exports.updateNote = function(req,res) {
 								});
 								return;
 							}
-							console.log("Error Here at updateNote 7");
+							console.log("Error Here at updateNote 7 at index " + i);
 							console.log(err);
 						};
 						res.json({
@@ -367,7 +367,7 @@ exports.deleteNote = function(req,res) {
 								success : false,
 								message : err
 							});
-							console.log("Error Here at deleteNote 2");
+							console.log("Error Here at deleteNote 2 at index " + i);
 							console.log(err);
 							return;
 						}

@@ -113,11 +113,12 @@
 	    {
 		    success : true,
 		    message : {
-			    ID      : (Array of User Objects for this User of the following form
+			    friends : (Array of User Objects for this User of the following form
 				    [
 					    {
-						    username : (String of the username for the friend)
-						    ID       : (String of the Database ID for the friend)
+						    username : (String of the username for the friend),
+						    ID       : (String of the Database ID for the friend),
+						    friends  : (Array of Strings of Database IDs for Users that this friend is Friends with)
 					    },… 
 				    ] 
 			    ),
@@ -135,7 +136,7 @@
 					    },… 
 				    ]
 			    ),
-			    friends : (Array of String IDs for Users that this User is friends with)
+			    ID : (String of Database ID for this User)
 		    }
 	    }
 
@@ -152,6 +153,62 @@
 		    }
 	    }
 
+	*OR*
+
+	    {
+		    success : false,
+		    message : (String Describing Error Here, can be Toasted to Front End)
+	    }
+
+
+##### Find User
+- Allows you to find a User by username. Returns users ID, and array of friends
+###### Request
+
+- **PUT**
+- `/user/finduser`
+- Key Value Pairs
+	- `username` : User's username
+
+###### Response
+
+- Success Response:
+
+	    {
+		    success : true,
+		    message : {
+			    ID      : (String of Database ID for the User)
+			    friends : (Array of User Objects for Users that this User is friends with of the following form
+				    [
+					    {
+						    username : (String of Username of this Friend)
+						    ID       : (String of Database ID for this Friend)
+						    friends  : (Array of String Database IDs for Users that this friend is friends with)
+					    },… 
+				    ]
+			    ),
+		    }
+	    }
+
+- Failure Response:
+
+	    {
+		    success : false,
+		    message : {
+			    "message": (String Message Describing Error Here),
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
+		    }
+	    }
+
+	*OR*
+
+	    {
+		    success : false,
+		    message : (String describing Error Here, can be Toasted on Front End)
+	    }
 
 ##### Update User
 

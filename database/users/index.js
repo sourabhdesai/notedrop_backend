@@ -1,7 +1,7 @@
-var mongoose  = null;
-var User      = null;
+var mongoose       = null;
+var User           = null;8
 exports.NotesModel = null;
-exports.model = null;
+exports.model      = null;
 
 exports.attatchMongoose = function(m) {
 	mongoose = m;
@@ -61,6 +61,8 @@ exports.createUser = function(req,res) {
 						success : false,
 						message : err
 					});
+					console.log("Error Here at createUser 1");
+					console.log(err);
 				} else {
 					res.json({
 						success : true,
@@ -81,7 +83,7 @@ exports.createUser = function(req,res) {
 				success : false,
 				message : err
 			});
-			console.log("Error Here at createUser 1");
+			console.log("Error Here at createUser 2");
 			console.log(err);
 		}
 	});
@@ -146,7 +148,8 @@ exports.loginUser = function(req,res) {
 						for(var i = 0; i < friendArray.length; i++) {
 							friendArray[i] = { 
 								username : friends[i].username,
-								ID : friends[i]._id
+								ID : friends[i]._id,
+								friends : friends[i].friends
 							};
 						}
 						if (user.notes.length > 0) {
@@ -159,7 +162,7 @@ exports.loginUser = function(req,res) {
 									console.log("Error Here at loginUser 3");
 									console.log(err);
 								}
-								else {
+								else if(notes) {
 									res.json({
 										success : true,
 										message : {
@@ -167,6 +170,11 @@ exports.loginUser = function(req,res) {
 											friends : friends,
 											notes : notes
 										}
+									});
+								} else {
+									res.json({
+										success : false,
+										message : "Couldn't Find any Notes corresponding to Note IDs for this User"
 									});
 								}
 							});
@@ -192,7 +200,7 @@ exports.loginUser = function(req,res) {
 							});
 							console.log("Error Here at loginUser 4");
 							console.log(err);
-						} else {
+						} else if(notes){
 							res.json({
 								success : true,
 								message : {
@@ -200,6 +208,11 @@ exports.loginUser = function(req,res) {
 									friends : [],
 									notes : notes
 								}
+							});
+						} else {
+							res.json({
+								success : false,
+								message : "Couldn't Find any Notes corresponding to Note IDs for this User"
 							});
 						}
 					});
@@ -219,6 +232,66 @@ exports.loginUser = function(req,res) {
 				success : false,
 				message : "Couldn't Find User with given Username & Password"
 			});
+		}
+	});
+};
+
+exports.findUser = function(req, res) {
+	var username = req.body.username;
+	User.findOne({
+		username : username
+	}).exec(function(err, user) {
+		if (err) {
+			res.json({
+				success : false,
+				message : err
+			});
+			console.log("Error Here at findUser 1");
+			console.log(err);
+		} else if (user) {
+			if (user.friends.length > 0) {
+				exports.NotesModel.find().or(user.friends).exec(function(err, friends) {
+					if (err) {
+						res.json({
+							success : false,
+							message : err
+						});
+						console.log("Error Here at findUser 2");
+						console.log(err);
+					} else if (friends) {
+						for(var i = 0; i < friends.length; i++) {
+							friends[i] = {
+								username : friends[i].username,
+								ID : friends[i]._id,
+								friends : friends[i].friends
+							};
+						}
+						res.json({
+							success : true,
+							message : {
+								ID : user._id,
+								friends : friends
+							}
+						});
+					} else {
+						res.json({
+							success : false,
+							message : {
+								ID : user._id,
+								friends : []
+							}
+						});
+					}
+				});
+			} else {
+				res.json({
+					success : false,
+					message : {
+						ID : user._id,
+						friends : []
+					}
+				});
+			}
 		}
 	});
 };
@@ -429,6 +502,8 @@ exports.deleteUser = function(req,res) {
 									success : false,
 									message : err
 								});
+								console.log("Error Here at deleteUser 4");
+								console.log(err);
 							} else if (friends) {
 								for(var i = 0; i < friends.length; i++) {
 									friends[i].removeFriend(user._id);
@@ -438,6 +513,8 @@ exports.deleteUser = function(req,res) {
 											success : false,
 											message : err
 										});
+										console.log("Error Here at deleteUser 5 at index " + i);
+										console.log(err);
 										return;
 									}
 								}
