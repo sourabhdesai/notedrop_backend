@@ -286,7 +286,7 @@ exports.findUser = function(req, res) {
 				});
 			} else {
 				res.json({
-					success : false,
+					success : true,
 					message : {
 						ID : user._id,
 						friends : []
