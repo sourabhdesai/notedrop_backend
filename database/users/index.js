@@ -193,7 +193,7 @@ exports.loginUser = function(req,res) {
 				});
 			} else {
 				if(user.notes.length > 0) {
-					exports.NotesModel.find().or(user.notes).exec(function(err, notes) {
+					exports.NotesModel.find( { _id : { $in : user.notes } } ).exec(function(err, notes) {
 						if (err) {
 							res.json({
 								success : false,
