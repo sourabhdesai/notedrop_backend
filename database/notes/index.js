@@ -65,7 +65,8 @@ exports.createNote = function(req,res) {
 			console.log("Error Here at createNote 1");
 			console.log(err);
 		} else {
-			exports.UserModel.find().or(userIDs).exec(function (err,users) {
+			if ()
+			exports.UserModel.findById().or(userIDs).exec(function (err,users) {
 				if (err) {
 					res.json({
 						success : false,
