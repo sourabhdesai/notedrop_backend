@@ -65,9 +65,6 @@ exports.createNote = function(req,res) {
 			console.log("Error Here at createNote 1");
 			console.log(err);
 		} else {
-			for(var i = 0; i < userIDs.length; i++) {
-				userIDs[i] = mongoose.Types.ObjectId(userIDs[i]);
-			}
 			exports.UserModel.find().or(userIDs).exec(function (err,users) {
 				if (err) {
 					res.json({
