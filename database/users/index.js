@@ -193,7 +193,7 @@ exports.loginUser = function(req,res) {
 				});
 			} else {
 				if(user.notes.length > 0) {
-					User.find().or(user.notes).exec(function(err, notes) {
+					exports.NotesModel.find().or(user.notes).exec(function(err, notes) {
 						if (err) {
 							res.json({
 								success : false,
@@ -201,7 +201,7 @@ exports.loginUser = function(req,res) {
 							});
 							console.log("Error Here at loginUser 4");
 							console.log(err);
-						} else if(notes){
+						} else if (notes) {
 							res.json({
 								success : true,
 								message : {
