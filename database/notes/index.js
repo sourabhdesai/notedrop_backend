@@ -2,6 +2,7 @@ var mongoose      = null;
 var Note          = null;
 exports.UserModel = null;
 exports.model     = null;
+var async         = require('async');
 
 exports.attatchMongoose = function(m) {
 	mongoose = m;
@@ -65,38 +66,18 @@ exports.createNote = function(req,res) {
 			console.log("Error Here at createNote 1");
 			console.log(err);
 		} else {
-			exports.UserModel.findById().or(userIDs).exec(function (err,users) {
+			exports.UserModel.update( { _id : { $in : userIDs } }, { $push : { notes : newNote._id } } ).exec(function(err) {
 				if (err) {
 					res.json({
 						success : false,
 						message : err
 					});
-					console.log("Error Here at createNote 2");
-					console.log(err);
-				} else if(users){
-					for(var i = 0; i < users.length; i++) {
-						users[i].notes.push(newNote); // O(users[i].notes.length) operation
-						var err = users[i].save();
-						if (err) {
-							res.json({
-								success : false,
-								message : err
-							});
-							console.log("Error Here at createNote 3");
-							console.log(err);
-							return;
-						}
-					}
+				} else {
 					res.json({
 						success : true,
 						message : {
 							ID : newNote._id
 						}
-					});
-				} else {
-					res.json({
-						success : true,
-						message : newNote._id
 					});
 				}
 			});
@@ -132,6 +113,101 @@ exports.readNote = function(req,res) {
 // Update data on Note ... Can Update any field within Note document
 exports.updateNote = function(req,res) {
 	var noteID = req.body.noteID;
+	var updates = {};
+	if ( req.body.text || req.body.latlong || req.body.radius|| req.body.startDate || req.body.endDate ) {
+		updates["$set"] = {};
+	}
+	if (req.body.text) {
+		updates.$set.text = req.body.text;
+	}
+	if (req.body.latlong) {
+		var latlong = req.body.latlong.split(',');
+		updates.$set.latlong = [ parseFloat(latlong[0]) , parseFloat(latlong[1]) ];
+	}
+	if (req.body.radius) {
+		updates.$set.radius = parseFloat(req.body.radius);
+	}
+	if (req.body.startDate) {
+		updates.$set.startDate = parseFloat(req.body.startDate);
+	}
+	if (req.body.endDate) {
+		updates.$set.endDate = parseFloat(req.body.endDate);
+	}
+	if (req.body.newusers) {
+		var newusersArray = req.body.newusers.split(',');
+		for(var i = 0; i < newusersArray.length; i++) {
+			newusersArray[i] = mongoose.Types.ObjectId(newusersArray[i]);
+		}
+		updates.$pushAll = { users : newusersArray };
+	}
+	if (req.body.removeusers) {
+		var removeusersArray = req.body.split(',');
+		for(var i = 0; i < removeusersArray.length; i++) {
+			removeusersArray[i] = mongoose.Types.ObjectId(removeusersArray[i]);
+		}
+		updates.$pullAll = { users : removeusersArray };
+	}
+	Note.update( { _id : noteID }, updates ).exec(function(err) {
+		if (err) {
+			res.json({
+				success : true,
+				message : err
+			});
+			console.log("Error Here at updateNote 1");
+			console.log(err);
+		} else {
+			Note.findById( mongoose.Types.ObjectId(noteID) ).exec(function(err, note) {
+				if (err) {
+					res.json({
+						success : false,
+						message : err
+					});
+					console.log("Error Here at updateNote 2");
+					console.log(err);
+				} else if (note){
+					var pushUsers = null, pullUsers = null;
+					var funcArray = [];
+					if (req.body.newusers) {
+						pushUsers = User.update( { _id : { $in : updates.$pushAll.users } }, { $push : { notes : note._id } }).exec;
+						funcArray.push(pushUsers);
+					}
+					if (req.body.removeusers) {
+						pullUsers = User.update( { _id : { $in : updates.$pullAll.users } }, { $pull : { notes : note._id } }).exec;
+						funcArray.push(pullUsers);
+					}
+					if (funcArray.length == 0) {
+						res.json({
+							success : true,
+							message : "Succesfully Updated Note"
+						});
+					} else {
+						async.series(funcArray, function(err) {
+							if (err) {
+								res.json({
+									success : false,
+									message : err
+								});
+								console.log("Error Here at updateNote 3");
+								console.log(err);
+							} else {
+								res.json({
+									success : true,
+									message : "Succesfully Updated Note"
+								});
+							}
+						});
+					}
+				} else {
+					res.json({
+						success : false,
+						message : "Couldn't Find Note with the Given Note ID"
+					});
+				}
+			});
+		}
+	});
+
+	/*
 	Note.findById(mongoose.Types.ObjectId(noteID)).exec(function(err,note) {
 		if (err) {
 			res.json({
@@ -339,6 +415,7 @@ exports.updateNote = function(req,res) {
 			}
 		}
 	});
+	*/
 }; // updateNote END
 
 // Delete Note

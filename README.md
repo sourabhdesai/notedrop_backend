@@ -402,8 +402,7 @@
 	- **NOTE: ALL OF THE FOLLOWING KEY VALUE PAIRS ARE OPTIONAL. HOWEVER, THERE MUST AT LEAST BE ONE**
 	- `noteID` : Database ID for the note that you want to update
 	- `text` : New Textual content for Note
-	- `latitude` : New Latitude of Note
-	- `longitude` : New Longitude of Note
+	- `latlong` : Comma seperated list of numbers representing new Latitude Longitude location for note, always in the form *Latitude,Longitude*
 	- `radius` : New Radius of Note
 	- `startDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *active*
 	- `endDate` : New Milliseconds since January 1, 1970 indicating time when the note should become *inactive*

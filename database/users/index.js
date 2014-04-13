@@ -2,6 +2,7 @@ var mongoose       = null;
 var User           = null;
 exports.NotesModel = null;
 exports.model      = null;
+var async          = require('async');
 
 exports.attatchMongoose = function(m) {
 	mongoose = m;
@@ -299,6 +300,113 @@ exports.findUser = function(req, res) {
 // Update data on User ... Currently for Adding New Message and Adding new Friend
 exports.updateUser = function(req,res) {
 	var userID = req.body.userID;
+	var updates = {};
+	if (req.body.newfriends) {
+		var newfriendsArray = req.body.newfriends.split(',');
+		for(var i = 0; i < newfriendsArray.length; i++) {
+			newfriendsArray[i] = mongoose.Types.ObjectId(newfriendsArray[i]);
+		}
+		updates["$pushAll"] = {
+			friends : newfriendsArray
+		};
+	}
+	if (req.body.removefriends) {
+		var removefriendsArray = req.body.removefriends.split(',');
+		for(var i = 0; i < removefriendsArray.length; i++) {
+			removefriendsArray[i] = mongoose.Types.ObjectId( removefriendsArray[i] );
+		}
+		updates["$pullAll"]= {
+			friends : removefriendsArray
+		};
+	}
+	if (req.body.newnotes) {
+		var newnotesArray = req.body.newnotes.split(',');
+		for(var i = 0; i < newnotesArray.length; i++) {
+			newnotesArray[i] = mongoose.Types.ObjectId( newnotesArray[i] );
+		}
+		if(! "$pushAll" in updates )
+			updates["$pushAll"] = {};
+		updates["$pushAll"].notes = newnotesArray;
+	}
+	if (req.body.removenotes) {
+		var removenotesArray = req.body.removenotes.split(',');
+		for(var i = 0; i < removenotesArray.length; i++) {
+			removenotesArray[i] = mongoose.Types.ObjectId( removenotesArray[i] );
+		}
+		if(! "$pullAll" in updates )
+			updates["$pullAll"] = {};
+		updates["$pullAll"].notes = removenotesArray;
+	}
+	User.update( { _id : userID }, updates ).exec(function(err) {
+		if (err) {
+			res.json({
+				success : false,
+				message : err
+			});
+			console.log("Error Here at updateUser 1");
+			console.log(err);
+		} else {
+			// Remove user from user.notes
+			User.findById( mongoose.Types.ObjectId(userID) ).exec(function(err, user) {
+				if (err) {
+					res.json({
+						success : false,
+						message : err
+					});
+					console.log("Error Here at updateUser 2");
+					console.log(err);
+				} else if(user) {
+					var pushFriends = null, pullFriends = null,
+						pushNotes = null, pullNotes = null;
+					var funcArray = [];
+					if (req.body.newfriends) {
+						pushFriends = User.update( { _id : { $in : updates.$pushAll.friends } }, { $push : { friends : user._id } }).exec;
+						funcArray.push(pushFriends);
+					}
+					if (req.body.removefriends) {
+						pullFriends = User.update( { _id : { $in : updates.$pullAll.friends } }, { $pull : { friends : user._id } }).exec;
+						funcArray.push(pullFriends);
+					}
+					if (req.body.newnotes) {
+						pushNotes = exports.NotesModel.update( { _id : { $in : updates.$pushAll.notes } }, { $push : { users : user._id } }).exec;
+						funcArray.push(pushNotes);
+					}
+					if (req.body.removenotes) {
+						pullNotes = exports.NotesModel.update( { _id : { $in : updates.$pullAll.notes } }, { $pull : { users : user._id } }).exec;
+						funcArray.push(pullNotes);
+					}
+					if (funcArray.length == 0) {
+						res.json({
+							success : true,
+							message : "Successfully Updated User"
+						});
+					} else {
+						async.series(funcArray, function(err) {
+							if (err) {
+								res.json({
+									success : false,
+									message : err
+								});
+								console.log("Error Here at updateUser 3");
+								console.log(err);
+							} else {
+								res.json({
+									success : true,
+									message : "Successfully Updated User"
+								});
+							}
+						});
+					}
+				} else {
+					res.json({
+						success : false,
+						message : "Couldn't Find User with given ID"
+					});
+				}
+			});
+		}
+	});
+	/*
 	User.findById(userID).exec( function(err, user) {
 		if (err) {
 			res.json({
@@ -454,6 +562,7 @@ exports.updateUser = function(req,res) {
 			});
 		}
 	});
+	*/
 }; // updateUser END
 
 // Delete User

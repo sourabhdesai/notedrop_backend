@@ -12,6 +12,7 @@
     "dwolla": "~0.1.1",
     "braintree": "~1.14.0",
     "venmo": "0.0.2",
-    "passport": "~0.2.0"
+    "passport": "~0.2.0",
+    "async": "~0.7.0"
   }
 }
