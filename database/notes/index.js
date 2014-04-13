@@ -107,7 +107,7 @@ exports.createNote = function(req,res) {
 // Read an existing Note's data
 exports.readNote = function(req,res) {
 	var noteID = req.param("id");
-	Note.findById(noteID).exec(function(err,note) {
+	Note.findById(mongoose.Types.ObjectId(noteID)).exec(function(err,note) {
 		if (err) {
 			res.json({
 				success : false,
