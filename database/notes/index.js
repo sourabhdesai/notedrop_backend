@@ -45,7 +45,7 @@ exports.createNote = function(req,res) {
 	var endDate   = parseFloat(req.body.endDate);
 	var userIDs   = req.body.users.split(','); //O(n) operation ... Can't pass an array through post body
 	for(var i = 0; i < userIDs.length; i++) {
-		userIDs[i] = mongoose.Types.ObjectId(userIDs[i]);
+		userIDs[i] = mongoose.Types.ObjectId( userIDs[i] );
 	}
 
 	var newNote       = new Note();
