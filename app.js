@@ -3,9 +3,9 @@
  */
 
 var express = require('express');
-var http = require('http');
-var path = require('path');
-var db = require('./database');
+var http    = require('http');
+var path    = require('path');
+var db      = require('./database');
 
 var app = express();
 
@@ -33,12 +33,12 @@ app.get('/', function(req,res) {
 });
 
 // User Data EndPoints
-app.post('/user/create', db.Users.createUser);
-app.get('/user/get/:id', db.Users.readUser);
-app.put('/user/login'  , db.Users.loginUser);
-app.put('/user/update' , db.Users.updateUser);
-app.put('/user/finduser' , db.Users.findUser);
-app.put('/user/delete' , db.Users.deleteUser);
+app.post('/user/create' , db.Users.createUser);
+app.get('/user/get/:id' , db.Users.readUser);
+app.put('/user/login'   , db.Users.loginUser);
+app.put('/user/update'  , db.Users.updateUser);
+app.put('/user/finduser', db.Users.findUser);
+app.put('/user/delete'  , db.Users.deleteUser);
 
 // Note Data EndPoints
 app.post('/note/create', db.Notes.createNote);

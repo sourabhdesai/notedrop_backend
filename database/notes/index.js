@@ -115,11 +115,17 @@ exports.readNote = function(req,res) {
 			});
 			console.log("Error Here at readNote 1");
 			console.log(err);
-		} else
+		} else if(note) {
 			res.json({
 				success : true,
 				message : note
 			});
+		} else {
+			res.json({
+				success : false,
+				message : "Incorrect Note ID"
+			});
+		}
 	});
 }; // readNote END
 

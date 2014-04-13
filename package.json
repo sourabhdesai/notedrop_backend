@@ -9,6 +9,9 @@
     "express": "3.4.7",
     "jade": "*",
     "mongoose": "~3.8.8",
-    "dwolla": "~0.1.1"
+    "dwolla": "~0.1.1",
+    "braintree": "~1.14.0",
+    "venmo": "0.0.2",
+    "passport": "~0.2.0"
   }
 }

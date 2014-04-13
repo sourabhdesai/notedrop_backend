@@ -1,5 +1,5 @@
 var mongoose       = null;
-var User           = null;8
+var User           = null;
 exports.NotesModel = null;
 exports.model      = null;
 
@@ -92,7 +92,7 @@ exports.createUser = function(req,res) {
 // Read an existing User's data
 exports.readUser = function(req,res) {
 	var userID = req.param("id");
-	User.findById(userID).exec( function(err, user) {
+	User.findById(mongoose.Types.ObjectId(userID)).exec( function(err, user) {
 		if (err) {
 			res.json({
 				success : false,

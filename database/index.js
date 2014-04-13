@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Users    = require('./users');
 var Notes    = require('./notes');
 
+
 // Attatch Mongoose to Each to get Access to mongoose api
 Users.attatchMongoose(mongoose);
 Notes.attatchMongoose(mongoose);
@@ -15,6 +16,7 @@ db.once('open', function () {
 	// Create Models to Use Internally
 	Users.createModel(db);
 	Notes.createModel(db);
+
 	// Share Models Between Users and Notes so they can do Operations on Each Other
 	Users.NotesModel = Notes.model;
 	Notes.UserModel  = Users.model;
