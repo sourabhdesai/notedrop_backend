@@ -432,7 +432,7 @@ exports.deleteNote = function(req,res) {
 		}
 		else
 			// Remove note from each user's notes field
-			UserModel.find().or(note.users).exec(function(err, users) {
+			UserModel.find( { _id : { $in : note.users } } ).exec(function(err, users) {
 				if (err) {
 					res.json({
 						success : false,

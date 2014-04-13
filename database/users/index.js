@@ -135,7 +135,7 @@ exports.loginUser = function(req,res) {
 			console.log(err);
 		} else if(user) {
 			if(user.friends.length > 0) {
-				User.find().or(user.friends).exec(function(err, friends) {
+				User.find( { _id : { $in : user.friends } } ).exec(function(err, friends) {
 					if (err) {
 						res.json({
 							success : false,
@@ -154,7 +154,7 @@ exports.loginUser = function(req,res) {
 							};
 						}
 						if (user.notes.length > 0) {
-							exports.NotesModel.find().or(user.notes).exec(function(err, notes) {
+							exports.NotesModel.find( { _id : { $in : user.notes } } ).exec(function(err, notes) {
 								if (err) {
 									res.json({
 										success : false,
@@ -251,7 +251,7 @@ exports.findUser = function(req, res) {
 			console.log(err);
 		} else if (user) {
 			if (user.friends.length > 0) {
-				exports.NotesModel.find().or(user.friends).exec(function(err, friends) {
+				User.find( { _id : { $in : user.friends } } ).exec(function(err, friends) {
 					if (err) {
 						res.json({
 							success : false,
@@ -581,7 +581,7 @@ exports.deleteUser = function(req,res) {
 		else {
 			console.log(user);
 			if(user.notes.length > 0) {
-				exports.NotesModel.find().or(user.notes).exec( function (err, notes) {
+				exports.NotesModel.find( { _id : { $in : user.notes } } ).exec( function (err, notes) {
 					if (err) {
 						res.json({
 							success : false,
@@ -605,7 +605,7 @@ exports.deleteUser = function(req,res) {
 							}
 						}
 						// Delete from Friends
-						User.find().or(user.friends).exec(function(err, friends) {
+						User.find( { _id : { $in : user.friends } } ).exec(function(err, friends) {
 							if (err) {
 								res.json({
 									success : false,
