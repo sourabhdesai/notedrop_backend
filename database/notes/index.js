@@ -8,7 +8,7 @@ exports.attatchMongoose = function(m) {
 };
 
 exports.createModel = function(db) {
-
+ 
 	var NoteSchema = new mongoose.Schema(
 		{
 			text      : String,
