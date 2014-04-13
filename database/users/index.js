@@ -307,7 +307,7 @@ exports.getUsers = function(req,res) {
 	for(var i = 0; i < userIDs.length; i++) {
 		userIDs[i] = mongoose.Types.ObjectId(userIDs[i]);
 	}
-	Users.find( { _id : { $in : userIDs } } ).exec(function(err, users) {
+	User.find( { _id : { $in : userIDs } } ).exec(function(err, users) {
 		if (err) {
 			res.json({
 				success : false,
