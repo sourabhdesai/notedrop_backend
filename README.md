@@ -220,6 +220,7 @@
 - **PUT**
 - `/user/update`
 - Key Value Pairs
+	- `userID` : Database ID for User that you want to update
 	- `newfriends` : Comma Seperated List of User IDs that this User wants to add to their friends list
 	- `removefriends` : Comma seperated List of User IDs that this User wants to remove from their friends list
 	- `newnotes` : Comma seperated list of Note IDs that this user wants to add to their notes list
