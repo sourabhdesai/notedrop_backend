@@ -66,9 +66,7 @@ exports.createNote = function(req,res) {
 			console.log(err);
 		} else {
 			for(var i = 0; i < userIDs.length; i++) {
-				userIDs[i] = {
-					_id : userIDs[i]
-				};
+				userIDs[i] = mongoose.Types.ObjectId(userIDs[i]);
 			}
 			exports.UserModel.find().or(userIDs).exec(function (err,users) {
 				if (err) {
@@ -78,7 +76,7 @@ exports.createNote = function(req,res) {
 					});
 					console.log("Error Here at createNote 2");
 					console.log(err);
-				} else {
+				} else if(users){
 					for(var i = 0; i < users.length; i++) {
 						users[i].notes.push(newNote); // O(users[i].notes.length) operation
 						var err = users[i].save();
@@ -87,8 +85,8 @@ exports.createNote = function(req,res) {
 								success : false,
 								message : err
 							});
-						console.log("Error Here at createNote 3");
-						console.log(err);
+							console.log("Error Here at createNote 3");
+							console.log(err);
 							return;
 						}
 					}
@@ -97,6 +95,11 @@ exports.createNote = function(req,res) {
 						message : {
 							ID : newNote._id
 						}
+					});
+				} else {
+					res.json({
+						success : true,
+						message : newNote._id
 					});
 				}
 			});
@@ -132,7 +135,7 @@ exports.readNote = function(req,res) {
 // Update data on Note ... Can Update any field within Note document
 exports.updateNote = function(req,res) {
 	var noteID = req.body.noteID;
-	Note.findById(noteID).exec(function(err,note) {
+	Note.findById(mongoose.Types.ObjectId(noteID)).exec(function(err,note) {
 		if (err) {
 			res.json({
 				success : false,
@@ -344,7 +347,7 @@ exports.updateNote = function(req,res) {
 // Delete Note
 exports.deleteNote = function(req,res) {
 	var noteID = req.body.noteID;
-	Note.findById(noteID).exec(function (err, note) {
+	Note.findById(mongoose.Types.ObjectId(noteID)).exec(function (err, note) {
 		if (err) {
 			res.json({
 				success : false,
