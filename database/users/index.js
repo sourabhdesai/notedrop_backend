@@ -302,6 +302,42 @@ exports.findUser = function(req, res) {
 	});
 };
 
+exports.getUsers = function(req,res) {
+	var userIDs = req.body.userIDs.split(',');
+	for(var i = 0; i < users.length; i++) {
+		userIDs[i] = mongoose.Types.ObjectId(userIDs[i]);
+	}
+	Users.find( { _id : { $in : userIDs } } ).exec(function(err, users) {
+		if (err) {
+			res.json({
+				success : false,
+				message : err
+			});
+			console.log("Error Here at getUsers");
+			console.log(err);
+		} else if (users) {
+			var usersArray = new Array(users.length);
+			for(var i = 0; i < usersArray.length; i++) {
+				usersArray[i] = {
+					username : users[i].username,
+					ID : users[i]._id
+				};
+			}
+			res.json({
+				success : true,
+				message : {
+					users : usersArray
+				}
+			});
+		} else {
+			res.json({
+				success : false,
+				message : "Couldn't Find Any Users with Given IDs"
+			});
+		}
+	});
+};
+
 // Update data on User ... Currently for Adding New Message and Adding new Friend
 exports.updateUser = function(req,res) {
 	var userID = req.body.userID;

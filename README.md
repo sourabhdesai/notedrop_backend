@@ -210,6 +210,54 @@
 		    message : (String describing Error Here, can be Toasted on Front End)
 	    }
 
+##### Get Users
+- Gives info on Users given user ids
+###### Request
+
+- **PUT**
+- `/user/getusers`
+- Key Value Pairs
+	- `userIDs` : Comma seperated list of User IDs
+
+###### Response
+
+- Success Response:
+
+	    {
+		    success : true,
+		    message : {
+			    users : (An array of User Objects of the Following Form
+				    [
+					    {
+						    username : (String Username of User),
+						    ID       : (String ID of User)
+					    },… 
+				    ]
+			    )
+		    }
+	    }
+
+- Failure Response:
+
+	    {
+		    success : false,
+		    message : {
+			    "message": (String Message Describing Error Here),
+			    "name"   : (String of the Error Name),
+			    "type"   : (String of the Object Type where the error occurred),
+			    "value"  : (String of the value the cause the error),
+			    "path"   : (String of the Path of the error)
+		    }
+	    }
+
+	*OR*
+
+	    {
+		    success : false,
+		    message : (String describing Error Here, can be Toasted on Front End)
+	    }
+
+
 ##### Update User
 
 - Currently Only adds new Note to User's Notes Field
