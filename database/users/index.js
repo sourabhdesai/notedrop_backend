@@ -251,7 +251,7 @@ exports.findUser = function(req, res) {
 			console.log(err);
 		} else if (user) {
 			if (user.friends.length > 0) {
-				User.find( { _id : { $in : user.friends } } ).exec(function(err, friends) {\
+				User.find( { _id : { $in : user.friends } } ).exec(function(err, friends) {
 					if (err) {
 						res.json({
 							success : false,
