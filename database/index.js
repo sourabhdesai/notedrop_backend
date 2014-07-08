@@ -10,7 +10,7 @@ Notes.attatchMongoose(mongoose);
 exports.Users = Users;
 exports.Notes = Notes;
 
-var db = mongoose.createConnection("mongodb://sourabhd:hovyhov1@ds037097.mongolab.com:37097/dropnote_db");
+var db = mongoose.createConnection("mongodb://<username>:<password>@ds037097.mongolab.com:37097/dropnote_db");
 
 db.once('open', function () {
 	// Create Models to Use Internally
